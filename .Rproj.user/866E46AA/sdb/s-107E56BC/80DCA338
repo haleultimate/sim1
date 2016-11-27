@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "symbols <- c(\n  \"XLF\", # Financial sector ETF\n  \"BRK-B\",\n  \"JPM\",\n  \"WFC\",\n  \"BAC\",\n  \"C\",\n  \"USB\",\n  \"GS\",\n  \"AIG\",\n  \"CB\",\n  \"AXP\",\n  \"MET\",\n  \"MS\",\n  \"BLK\",\n  \"PNC\",\n  \"BK\",\n  \"SCHW\",\n  \"CME\",\n  \"COF\",\n  \"MMC\",\n  \"PRU\",\n  \"TRV\",\n  \"SPGI\",\n  \"ICE\",\n  \"BBT\",\n  \"AON\",\n  \"AFL\",\n  \"STT\",\n  \"ALL\",\n  \"DFS\",\n  \"STI\",\n  \"PGR\",\n  \"MTB\",\n  \"HIG\",\n  \"TROW\",\n  \"AMP\",\n  \"FITB\",\n  \"NTRS\",\n  \"PFG\",\n  \"KEY\",\n  \"IVZ\",\n  \"BEN\",\n  \"RF\",\n  \"CINF\",\n  \"L\",\n  \"HBAN\",\n  \"LNC\",\n  \"XL\",\n  \"AJG\",\n  \"UNM\",\n  \"CMA\",\n  \"NDAQ\",\n  \"AMG\",\n  \"ETFC\",\n  \"TMK\",\n  \"ZION\",\n  \"LUK\",\n  \"AIZ\",\n  \"LM\"\n)\nstx_n <- c(2:length(symbols)) #c(2:length(symbols))  #c(5:10) #c(2:length(symbols))  #c(5:10) #\nstx.symbols <- symbols[stx_n]      #list of stx to trade\nstx <- length(stx_n)\n#load mktdata\nstx_list <- append(1,stx_n)\nstx_list <- symbols[stx_list]      #cmn index + stx to trade\n\nrm.list <- ls(all=TRUE)\nkeep.list <- c(stx_list,\"stx\",\"stx_list\",\"stx.symbols\",\"stx_n\",\"stx_list.old\")\nisNameinKeep <- rm.list %in% keep.list\nrm.list <- c(rm.list[!isNameinKeep],\"keep.list\",\"isNameinKeep\",\"rm.list\")\nrm(list = rm.list)  #clear environment except for loaded stock data \n\nrequire(blotter)\n.blotter <- new.env()\n.instrument <- new.env()\nrequire(lpSolveAPI)\nrequire(quantmod)\nrequire(dplyr)\n\n#Init data_load vars\nSys.setenv(TZ = \"UTC\")\ncurrency('USD')\nstock(stx.symbols, \n      currency = \"USD\", \n      multiplier = 1)\nadjustment <- TRUE\nstart_date <- \"2004-01-01\" #\"2004-01-01\"\nend_date <- \"2012-12-31\"\nif (!exists(\"stx_list.old\")) {         #only load if stx_list has changed\n  getSymbols(Symbols = stx_list, \n             src = \"yahoo\", \n             index.class = \"POSIXct\",\n             from = start_date, \n             to = end_date, \n             adjust = adjustment)\n  stx_list.old <- stx_list\n} else if (!identical(stx_list,stx_list.old)) {\n  isNameinStxold <- stx_list %in% stx_list.old\n  stx_list.new <- stx_list[!isNameinStxold]\n  getSymbols(Symbols = stx_list.new, \n             src = \"yahoo\", \n             index.class = \"POSIXct\",\n             from = start_date, \n             to = end_date, \n             adjust = adjustment)\n  rm(stx_list.new,isNameinStxold)\n  stx_list.old <- stx_list\n}\n\nverbose <- FALSE\n#run_type <- \"add_vars\"\n#nloops <- 10\n#insample.r2.threshold <- 0.02\npredict.ret <- \"CCret\"  #must match first variable defined in v.com \n\n#corr.threshold <- 0.7\nv.com <- NULL\n#load(file=\"cores50.Rdata\")\n#if (verbose & exists(\"store.data\")) print(store.data[length(store.data)])\n\nsim_init_date <- \"2011-12-30\"\nsim_start_date <- \"2012-01-03\"\nsim_end_date <- \"2012-02-01\" #end_date\nsim_date_range <- paste(sim_start_date,sim_end_date,sep=\"/\") \nsim_date_index <- index(get(stx_list[1])[sim_date_range])\n\nport_size <- init_equity <- 10000*stx\nlot_size <- 100\n\n#init portfolio and account\nportfolio.st <- \"Port.pos\"\naccount.st <- \"Acct.pos\"\n\ninitPortf(name = portfolio.st,\n          symbols = stx.symbols,\n          initDate = sim_init_date)\ninitAcct(name = account.st,\n         portfolios = portfolio.st,\n         initDate = sim_init_date,\n         initEq = init_equity)\n\n\n",
+    "created" : 1479933306933.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2149904035",
+    "id" : "80DCA338",
+    "lastKnownWriteTime" : 1480279281,
+    "last_content_update" : 1480279281083,
+    "path" : "~/XLF/pred_opt_sim/init_session.R",
+    "project_path" : "init_session.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

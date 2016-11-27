@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "#Calculate Vlty and Next day returns\n#create vars as defined in v.com, ordered by tier_v list\n#stx.data <- NULL\n#oos.data <- NULL\n\nif (verbose) print(\"Setup v.com\")\nv1 <- NULL\nv1$type <- \"ret\"\nv1$var <- \"ret\"\nv1$retnam <- substr(predict.ret,1,2)\nv1$cap <- 0.01\nv1$name <- predict.ret\nv.com$CCret <- v1\nnames(v.com) <- predict.ret\nv1 <- NULL\nv1$type <- \"ret\"\nv1$var <- \"vlt\"\nv1$retnam <- \"CC\"\nv1$lag <- 1\nv1$name <- \"CCvlt\"\nv.com$CCvlt <- v1\n\nif (verbose) print(\"Calc cmn vars\")\nnam <- stx_list[1]\nadjv <- calc_adj(get(nam),nam)\nlagv <- calc_lag(adjv,rename=TRUE)\ncmnpvars <- cbind(adjv,lagv)\ncmnret <- calc_rets(cmnpvars)\ncmnret.cap <- calc_cap(cmnret,0.01)\n\nMU <- NULL\nVLTY <- NULL\nfor (nam in stx.symbols) {\n  #nam <- symbols[n]\n  if (verbose) print(paste(\"Getting data for:\",nam))\n  \n  #calculate returns (list of returns in calc_rets in calc_func.R)\n  adjv <- calc_adj(get(nam),nam)\n  lagv <- calc_lag(adjv,rename=TRUE)\n  pvars <- cbind(adjv,lagv)\n  ret <- calc_rets(pvars)\n  res <- ret - cmnret  #create resid returns\n  if (verbose) print(\"calc logadv.z\")\n  logadv.z <- runMean(adjv[,\"D\"],n=20,cumulative=FALSE)\n  logadv.z <- log(logadv.z)\n  logadv.z <- logadv.z - 18.5 #create logadv.z, lb=20, assumed 18.5 as mean\n  names(logadv.z) <- \"logadv.z\"\n  \n  if (verbose) print (\"mk_vars_fun\")\n  stx1.data <- mk_vars_fun(v.com, res, ret, cmnret, logadv.z, adjv, cmnpvars)\n  \n  if (verbose) print(\"postprocess data\")\n  if (is.null(MU)) {\n    MU <- stx1.data[,\"CCret\"]\n  } else {\n    MU <- cbind(MU,stx1.data[,\"CCret\"])\n  }\n  if (is.null(VLTY)) {\n    VLTY <- stx1.data[,\"CCvlt\"]\n  } else {\n    VLTY <- cbind(VLTY,stx1.data[,\"CCvlt\"])\n  }\n  \n  #attach date and TICKER as key fields on variable data\n  #if (verbose) print(colnames(stx1.data))\n  #stx1.data.df <- as.data.frame(stx1.data)\n  #stx2.data <- as.data.frame(index(stx1.data))\n  #stx2.data[,2] <- rep(nam, nrow(stx1.data))\n  #colnames(stx2.data) <- c(\"date\",\"TICKER\")\n  #stx1.data.df <- bind_cols(stx2.data,stx1.data.df)\n  #if (verbose) print(colnames(stx1.data.df))\n  \n  #stx1.data.df <- slice(stx1.data.df, -1:-90)\n  #stx1.data.df[is.na(stx1.data.df)] <- 0\n  #dp <- nrow(stx1.data.df)\n  #if (dp > 252) {\n  #  oos1.data.df <- slice(stx1.data.df,(dp-252):dp)\n  #  stx1.data.df <- slice(stx1.data.df,-(dp-252):-dp)\n  #} else {\n  #  oos1.data.df <- stx1.data.df\n  #  stx1.data.df <- NULL\n  #}\n  \n  #stx.data <- bind_rows(stx.data,stx1.data.df)\n  #oos.data <- bind_rows(oos.data,oos1.data.df)\n  \n}  \n  \n  \n  ",
+    "created" : 1479954436804.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1998776345",
+    "id" : "B59F865E",
+    "lastKnownWriteTime" : 1480011571,
+    "last_content_update" : 1480011571946,
+    "path" : "~/XLF/pred_opt_sim/mk_ret_vlt.R",
+    "project_path" : "mk_ret_vlt.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

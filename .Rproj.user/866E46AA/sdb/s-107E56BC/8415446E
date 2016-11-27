@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#make into function\n#add in ordering logic\n#pass in sim_start_date, sim_end_date\n\n#sim Blotter\nif (verbose) print (\"Running Sim\")\nshares <- matrix(nrow=length(sim_date_index),ncol=length(stx.symbols))\n#for ( s in stx.symbols) {\nfor (SimDate_i in 1:(length(sim_date_index))) {\n  SimDate <- sim_date_index[SimDate_i]\n  equity <- init_equity #equity <- getEndEq(account.st, SimDate)\n  if (verbose) print(paste(\"DATE:\",SimDate,\"Equity:\",equity))\n  port.pos <- port_opt_lp(as.vector(MU[SimDate]),as.vector(VLTY[SimDate]),equity)\n  shares[SimDate_i,] <- port.pos\n  if (verbose) print(port.pos)\n  #for (stk in 1:length(stx.symbols)) {\n  #  stk.ticker <- stx.symbols[stk]\n  #  Posn <- getPosQty(portfolio.st,Symbol=stk.ticker,Date=SimDate)\n  #  if ((abs(port.pos[stk]) < lot_size) & (abs(Posn) < lot_size)) next\n  #  stk.price_field <- paste(stk.ticker,\"Adjusted\",sep=\".\")\n  #  stk.price <- as.numeric(get(stk.ticker)[SimDate,stk.price_field])\n  #  if (abs(port.pos[stk]) < lot_size) {\n  #    stk.qty <- 0\n  #  } else {\n  #    stk.qty <- port.pos[stk]/stk.price\n  #  }\n  #  stk.order_size <- stk.qty - Posn\n  #  if (verbose) print(paste(stk.ticker,Posn,port.pos[stk],stk.qty,stk.price))\n  #  addTxn(portfolio.st,Symbol=stk.ticker,TxnDate=SimDate,TxnPrice=stk.price,TxnQty=stk.order_size,TxnFees=0)\n  #}\n  #AdjPrice <- as.numeric(Ad(get(s)[i,]))\n  #Posn <- getPosQty(portfolio.st,Symbol=s,Date=CurrentDate)\n  #UnitSize <- as.numeric(trunc(equity/AdjPrice))\n#    if (Posn == 0) {\n#      if (AdjPrice < 0.8*start.price) {\n#        addTxn(portfolio.st,Symbol=s,TxnDate=CurrentDate,TxnPrice=AdjPrice,TxnQty=UnitSize,TxnFees=0)\n#      } else if (AdjPrice > 1.2*start.price) {\n#        addTxn(portfolio.st,Symbol=s,TxnDate=CurrentDate,TxnPrice=AdjPrice,TxnQty=-UnitSize,TxnFees=0)\n#      }\n#    } else if (Posn > 0) {\n#      if (AdjPrice > start.price) {\n#        addTxn(portfolio.st,Symbol=s,TxnDate=CurrentDate,TxnPrice=AdjPrice,TxnQty=-Posn,TxnFees=0)\n#      }\n#    } else if (Posn < 0) {\n#      if (AdjPrice < start.price) {\n#        addTxn(portfolio.st,Symbol=s,TxnDate=CurrentDate,TxnPrice=AdjPrice,TxnQty=-Posn,TxnFees=0)\n#      }\n#    }\n    #updatePortf(portfolio.st,Dates=SimDate)\n    #updateAcct(account.st,Dates=SimDate)\n    #updateEndEq(account.st,SimDate)\n}",
+    "created" : 1479965368833.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "811000897",
+    "id" : "8415446E",
+    "lastKnownWriteTime" : 1480279230,
+    "last_content_update" : 1480279230850,
+    "path" : "~/XLF/pred_opt_sim/blotter_sim.R",
+    "project_path" : "blotter_sim.R",
+    "properties" : {
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

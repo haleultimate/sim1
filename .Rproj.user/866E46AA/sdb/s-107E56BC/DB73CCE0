@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "#run pred_opt_sim\nsource(\"init_session.R\")\nsource(\"calc_func.R\")\nsource(\"port_opt.R\")\nsource(\"mk_ret_vlt.R\")\nsource(\"blotter_sim.R\")\n\nMU.matrix <- as.matrix(MU[sim_date_index])\nMU_shares <- MU.matrix*shares\ndayprofit <- rowSums(MU_shares)\ntotalprofit <- sum(dayprofit)",
+    "created" : 1479955800473.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1186677249",
+    "id" : "DB73CCE0",
+    "lastKnownWriteTime" : 1480279067,
+    "last_content_update" : 1480279067895,
+    "path" : "~/XLF/pred_opt_sim/run_pred_opt_sim.R",
+    "project_path" : "run_pred_opt_sim.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
